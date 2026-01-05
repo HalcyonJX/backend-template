@@ -2,6 +2,8 @@ package com.halcyon.backendtemplate.service;
 
 import com.halcyon.backendtemplate.model.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.halcyon.backendtemplate.model.vo.LoginUserVO;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
 * @author 张嘉鑫
@@ -27,4 +29,29 @@ public interface UserService extends IService<User> {
      * @return
      */
     String getEncryptPassword(String userPassword);
+
+    /**
+     * 用户登录
+     *
+     * @param userAccount  用户账户
+     * @param userPassword 用户密码
+     * @param request
+     * @return 脱敏后的用户信息
+     */
+    LoginUserVO userLogin(String userAccount, String userPassword, HttpServletRequest request);
+
+    /**
+     * 获取当前登录用户
+     *
+     * @param request
+     * @return
+     */
+    User getLoginUser(HttpServletRequest request);
+
+    /**
+     * 获取脱敏的已登录用户信息
+     *
+     * @return
+     */
+    LoginUserVO getLoginUserVO(User user);
 }

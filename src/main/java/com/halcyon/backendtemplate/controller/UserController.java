@@ -4,13 +4,14 @@ import com.halcyon.backendtemplate.common.BaseResponse;
 import com.halcyon.backendtemplate.common.ResultUtils;
 import com.halcyon.backendtemplate.exception.ErrorCode;
 import com.halcyon.backendtemplate.exception.ThrowUtils;
+import com.halcyon.backendtemplate.model.dto.user.UserLoginRequest;
 import com.halcyon.backendtemplate.model.dto.user.UserRegisterRequest;
+import com.halcyon.backendtemplate.model.entity.User;
+import com.halcyon.backendtemplate.model.vo.LoginUserVO;
 import com.halcyon.backendtemplate.service.UserService;
 import jakarta.annotation.Resource;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
@@ -30,5 +31,26 @@ public class UserController {
         String checkPassword = userRegisterRequest.getCheckPassword();
         long result = userService.userRegister(userAccount, userPassword, checkPassword);
         return ResultUtils.success(result);
+    }
+
+    /**
+     * 用户登录
+     */
+    @PostMapping("/login")
+    public BaseResponse<LoginUserVO> userLogin(@RequestBody UserLoginRequest userLoginRequest, HttpServletRequest request){
+        ThrowUtils.throwIf(userLoginRequest == null, ErrorCode.PARAMS_ERROR);
+        String userAccount = userLoginRequest.getUserAccount();
+        String userPassword = userLoginRequest.getUserPassword();
+        LoginUserVO result = userService.userLogin(userAccount, userPassword, request);
+        return ResultUtils.success(result);
+    }
+
+    /**
+     * 获取当前登录用户接口
+     */
+    @GetMapping("/get/login")
+    public BaseResponse<LoginUserVO> getLoginUser(HttpServletRequest request){
+        User result = userService.getLoginUser(request);
+        return ResultUtils.success(userService.getLoginUserVO(result));
     }
 }
