@@ -53,4 +53,16 @@ public class UserController {
         User result = userService.getLoginUser(request);
         return ResultUtils.success(userService.getLoginUserVO(result));
     }
+
+    /**
+     * 用户注销
+     * @param request
+     * @return
+     */
+    @PostMapping("/logout")
+    public BaseResponse<Boolean> userLogout(HttpServletRequest request) {
+        ThrowUtils.throwIf(request == null, ErrorCode.PARAMS_ERROR, "参数不能为空");
+        boolean result = userService.userLogout(request);
+        return ResultUtils.success(result);
+    }
 }
