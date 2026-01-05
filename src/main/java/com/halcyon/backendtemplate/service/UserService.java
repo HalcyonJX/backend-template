@@ -1,9 +1,15 @@
 package com.halcyon.backendtemplate.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.halcyon.backendtemplate.model.dto.user.UserQueryRequest;
 import com.halcyon.backendtemplate.model.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.halcyon.backendtemplate.model.vo.LoginUserVO;
+import com.halcyon.backendtemplate.model.vo.UserVO;
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.List;
 
 /**
 * @author 张嘉鑫
@@ -62,4 +68,27 @@ public interface UserService extends IService<User> {
      * @return
      */
     boolean userLogout(HttpServletRequest request);
+
+    /**
+     * 获得脱敏后的用户信息
+     *
+     * @param user
+     * @return
+     */
+    UserVO getUserVO(User user);
+
+    /**
+     * 获得脱敏后的用户信息列表
+     *
+     * @param userList
+     * @return 脱敏后的用户列表
+     */
+    List<UserVO> getUserVOList(List<User> userList);
+
+    /**
+     * 获取查询条件
+     * @param userQueryRequest
+     * @return
+     */
+    QueryWrapper<User> getQueryWrapper(UserQueryRequest userQueryRequest);
 }
